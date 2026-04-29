@@ -7,7 +7,7 @@ Claude Code / Gemini CLI 에서 Jira, Google Workspace, Figma, Axure를
 
 ## 포함 MCP 및 도구
 
-### 📋 Jira (`jira`)
+### 📋 Jira (`jira`) — [@sooperset/mcp-atlassian](https://github.com/sooperset/mcp-atlassian)
 - 이슈 조회·생성·업데이트·전환
 - 스프린트·프로젝트·댓글 관리
 
@@ -45,8 +45,8 @@ Claude Code / Gemini CLI 에서 Jira, Google Workspace, Figma, Axure를
 ### 1. 레포지토리 클론
 
 ```bash
-git clone https://github.com/your-org/saramin-ai-mcp.git
-cd saramin-ai-mcp
+git clone https://github.com/dongdong-com/mcp-dock.git
+cd mcp-dock
 ```
 
 ### 2. 자동 설치 (Windows)
@@ -63,6 +63,8 @@ cp .env.example .env
 mkdir credentials
 ```
 
+> `npm install` 로 Jira MCP(`@sooperset/mcp-atlassian`), Google SDK(`googleapis`), Axure 파서(`cheerio`) 등 모든 의존성이 함께 설치됩니다.
+
 ---
 
 ## API 토큰 설정
@@ -72,9 +74,9 @@ mkdir credentials
 
 ```env
 # Jira
-ATLASSIAN_BASE_URL=https://your-company.atlassian.net
-ATLASSIAN_EMAIL=your-email@company.com
-ATLASSIAN_API_TOKEN=...          # https://id.atlassian.com/manage-profile/security/api-tokens
+JIRA_URL=https://your-company.atlassian.net
+JIRA_USERNAME=your-email@company.com
+JIRA_API_TOKEN=...               # https://id.atlassian.com/manage-profile/security/api-tokens
 
 # Figma
 FIGMA_ACCESS_TOKEN=figd_...      # Figma → Settings → Security → Personal access tokens
@@ -118,12 +120,12 @@ python scripts/auth-google.py
 {
   "claude.mcpServers": {
     "jira": {
-      "command": "node",
-      "args": ["./node_modules/.bin/mcp-atlassian"],
+      "command": "npx",
+      "args": ["-y", "@sooperset/mcp-atlassian"],
       "env": {
-        "ATLASSIAN_BASE_URL": "${env:ATLASSIAN_BASE_URL}",
-        "ATLASSIAN_EMAIL": "${env:ATLASSIAN_EMAIL}",
-        "ATLASSIAN_API_TOKEN": "${env:ATLASSIAN_API_TOKEN}",
+        "JIRA_URL": "${env:JIRA_URL}",
+        "JIRA_USERNAME": "${env:JIRA_USERNAME}",
+        "JIRA_API_TOKEN": "${env:JIRA_API_TOKEN}",
         "NODE_EXTRA_CA_CERTS": "${env:NODE_EXTRA_CA_CERTS}",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       }
@@ -157,6 +159,8 @@ python scripts/auth-google.py
 }
 ```
 
+> 💡 **Windows 한정**: `npx` 명령어가 인식되지 않으면 `"npx"` → `"npx.cmd"` 로 변경하세요.
+
 ---
 
 ## Gemini CLI 설정 적용
@@ -167,12 +171,12 @@ python scripts/auth-google.py
 {
   "mcpServers": {
     "jira": {
-      "command": "node",
-      "args": ["./node_modules/.bin/mcp-atlassian"],
+      "command": "npx",
+      "args": ["-y", "@sooperset/mcp-atlassian"],
       "env": {
-        "ATLASSIAN_BASE_URL": "${ATLASSIAN_BASE_URL}",
-        "ATLASSIAN_EMAIL": "${ATLASSIAN_EMAIL}",
-        "ATLASSIAN_API_TOKEN": "${ATLASSIAN_API_TOKEN}",
+        "JIRA_URL": "${JIRA_URL}",
+        "JIRA_USERNAME": "${JIRA_USERNAME}",
+        "JIRA_API_TOKEN": "${JIRA_API_TOKEN}",
         "NODE_EXTRA_CA_CERTS": "${NODE_EXTRA_CA_CERTS}",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       }
@@ -209,7 +213,7 @@ NODE_EXTRA_CA_CERTS=./certs/zscaler-root-ca.pem
 ## 디렉터리 구조
 
 ```
-saramin-ai-mcp/
+mcp-dock/
 ├── README.md
 ├── .env.example              # 환경변수 템플릿 (값은 직접 입력)
 ├── .gitignore
@@ -238,9 +242,10 @@ saramin-ai-mcp/
 | `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` | [docs/zscaler-setup.md](docs/zscaler-setup.md) 참고 |
 | `GOOGLE_OAUTH_PATH not found` | `credentials/gcp-oauth.keys.json` 파일 확인 |
 | `GOOGLE_TOKEN_PATH not found` | `python scripts/auth-google.py` 재실행 |
-| Jira 401 오류 | `ATLASSIAN_API_TOKEN` 재발급 후 `.env` 업데이트 |
+| Jira 401 오류 | `JIRA_API_TOKEN` 재발급 후 `.env` 업데이트 |
 | Figma `Unauthorized` | `FIGMA_ACCESS_TOKEN` 재발급 |
 | Axure 기획서 못 찾음 | `AXURE_DEFAULT_DIR` 경로 확인 |
+| `npx` 명령어 오류 (Windows) | `npx` → `npx.cmd` 로 변경 |
 
 ---
 

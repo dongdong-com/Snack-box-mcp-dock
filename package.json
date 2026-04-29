@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.16.0",
+    "@sooperset/mcp-atlassian": "latest",
     "cheerio": "^1.0.0",
     "googleapis": "^144.0.0"
   },

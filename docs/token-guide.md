@@ -16,9 +16,9 @@
 
 ### .env 설정
 ```env
-ATLASSIAN_BASE_URL=https://your-company.atlassian.net
-ATLASSIAN_EMAIL=your-email@company.com
-ATLASSIAN_API_TOKEN=여기에_복사한_토큰
+JIRA_URL=https://your-company.atlassian.net
+JIRA_USERNAME=your-email@company.com
+JIRA_API_TOKEN=여기에_복사한_토큰
 ```
 
 > ⚠️ 회사 Atlassian 계정 기준입니다. 개인 Atlassian 계정과 다를 수 있습니다.
