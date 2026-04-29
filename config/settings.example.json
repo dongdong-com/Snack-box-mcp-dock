@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "jira": {
+      "command": "node",
+      "args": ["./node_modules/.bin/mcp-atlassian"],
+      "env": {
+        "ATLASSIAN_BASE_URL": "${env:ATLASSIAN_BASE_URL}",
+        "ATLASSIAN_EMAIL": "${env:ATLASSIAN_EMAIL}",
+        "ATLASSIAN_API_TOKEN": "${env:ATLASSIAN_API_TOKEN}",
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0",
+        "NODE_EXTRA_CA_CERTS": "${env:NODE_EXTRA_CA_CERTS}"
+      }
+    },
+    "figma": {
+      "command": "npx",
+      "args": ["-y", "mcp-figma"],
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "${env:FIGMA_ACCESS_TOKEN}"
+      }
+    },
+    "google-sheets": {
+      "command": "npx",
+      "args": ["-y", "mcp-google-sheets"],
+      "env": {
+        "CREDENTIALS_PATH": "${env:GOOGLE_OAUTH_PATH}",
+        "TOKEN_PATH": "${env:GOOGLE_TOKEN_PATH}"
+      }
+    },
+    "custom": {
+      "command": "node",
+      "args": ["./servers/custom-mcp-server.mjs"],
+      "env": {
+        "GOOGLE_OAUTH_PATH": "${env:GOOGLE_OAUTH_PATH}",
+        "GOOGLE_TOKEN_PATH": "${env:GOOGLE_TOKEN_PATH}",
+        "AXURE_DEFAULT_DIR": "${env:AXURE_DEFAULT_DIR}",
+        "NODE_EXTRA_CA_CERTS": "${env:NODE_EXTRA_CA_CERTS}"
+      }
+    }
+  }
+}
