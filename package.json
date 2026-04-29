@@ -1,7 +1,7 @@
 {
-  "name": "saramin-ai-mcp",
+  "name": "snack-box-mcp-dock",
   "version": "1.0.0",
-  "description": "Saramin AI MCP Kit — Jira, Google Workspace, Figma, Axure 통합 MCP 서버",
+  "description": "Snack-box MCP Dock — Jira, Google Workspace, Figma, Axure 통합 MCP 서버",
   "type": "module",
   "scripts": {
     "start": "node servers/custom-mcp-server.mjs",

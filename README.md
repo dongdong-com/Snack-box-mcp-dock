@@ -1,4 +1,4 @@
-# Saramin AI MCP Kit
+# 🍱 Snack-box MCP Dock
 
 Claude Code / Gemini CLI 에서 Jira, Google Workspace, Figma, Axure를  
 **단 한 번의 설치**로 모두 사용할 수 있는 MCP 통합 패키지입니다.
