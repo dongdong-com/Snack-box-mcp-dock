@@ -7,9 +7,12 @@ Claude Code / Gemini CLI 에서 Jira, Google Workspace, Figma, Axure를
 
 ## 포함 MCP 및 도구
 
-### 📋 Jira (`jira`) — [@sooperset/mcp-atlassian](https://github.com/sooperset/mcp-atlassian)
+### 📋 Jira (`jira`) — [sooperset/mcp-atlassian](https://github.com/sooperset/mcp-atlassian) (Python · uvx 실행)
 - 이슈 조회·생성·업데이트·전환
 - 스프린트·프로젝트·댓글 관리
+
+> ⚠️ `mcp-atlassian` 은 **Python 패키지**입니다 (npm 미등록). `uv` 가 설치되어 있어야 합니다.
+> 설치: `brew install uv` · `curl -LsSf https://astral.sh/uv/install.sh | sh` · `winget install astral-sh.uv`
 
 ### 🎨 Figma (`figma`)
 - 디자인 파일·컴포넌트·변수 조회
@@ -35,6 +38,10 @@ Claude Code / Gemini CLI 에서 Jira, Google Workspace, Figma, Axure를
 
 - **Node.js** v18 이상
 - **Python** 3.8 이상 (Google 최초 인증 시 1회만 필요)
+- **uv** (Astral) — Jira MCP (`mcp-atlassian` Python 패키지) 의 `uvx` 런타임용
+  - macOS: `brew install uv`
+  - Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+  - Windows: `winget install astral-sh.uv`
 - **Claude Code** 또는 **Gemini CLI**
 - 기업 내부망 사용 시: Zscaler 루트 인증서 → [docs/zscaler-setup.md](docs/zscaler-setup.md)
 
@@ -63,7 +70,8 @@ cp .env.example .env
 mkdir credentials
 ```
 
-> `npm install` 로 Jira MCP(`@sooperset/mcp-atlassian`), Google SDK(`googleapis`), Axure 파서(`cheerio`) 등 모든 의존성이 함께 설치됩니다.
+> `npm install` 로 Google SDK(`googleapis`), Axure 파서(`cheerio`), MCP SDK 가 설치됩니다.
+> Jira MCP(`mcp-atlassian`) 는 Python 패키지라 `uvx` 가 런타임 시 자동으로 끌어옵니다 (`uv` 사전 설치 필요).
 
 ---
 
@@ -120,14 +128,13 @@ python scripts/auth-google.py
 {
   "claude.mcpServers": {
     "jira": {
-      "command": "npx",
-      "args": ["-y", "@sooperset/mcp-atlassian"],
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
       "env": {
         "JIRA_URL": "${env:JIRA_URL}",
         "JIRA_USERNAME": "${env:JIRA_USERNAME}",
         "JIRA_API_TOKEN": "${env:JIRA_API_TOKEN}",
-        "NODE_EXTRA_CA_CERTS": "${env:NODE_EXTRA_CA_CERTS}",
-        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+        "NODE_EXTRA_CA_CERTS": "${env:NODE_EXTRA_CA_CERTS}"
       }
     },
     "figma": {
@@ -160,6 +167,7 @@ python scripts/auth-google.py
 ```
 
 > 💡 **Windows 한정**: `npx` 명령어가 인식되지 않으면 `"npx"` → `"npx.cmd"` 로 변경하세요.
+> `uvx` 는 `.exe` 라 변환 불필요합니다.
 
 ---
 
@@ -171,14 +179,13 @@ python scripts/auth-google.py
 {
   "mcpServers": {
     "jira": {
-      "command": "npx",
-      "args": ["-y", "@sooperset/mcp-atlassian"],
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
       "env": {
         "JIRA_URL": "${JIRA_URL}",
         "JIRA_USERNAME": "${JIRA_USERNAME}",
         "JIRA_API_TOKEN": "${JIRA_API_TOKEN}",
-        "NODE_EXTRA_CA_CERTS": "${NODE_EXTRA_CA_CERTS}",
-        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+        "NODE_EXTRA_CA_CERTS": "${NODE_EXTRA_CA_CERTS}"
       }
     },
     "custom": {
@@ -243,6 +250,8 @@ mcp-dock/
 | `GOOGLE_OAUTH_PATH not found` | `credentials/gcp-oauth.keys.json` 파일 확인 |
 | `GOOGLE_TOKEN_PATH not found` | `python scripts/auth-google.py` 재실행 |
 | Jira 401 오류 | `JIRA_API_TOKEN` 재발급 후 `.env` 업데이트 |
+| `uvx: command not found` 또는 jira MCP 미연결 | `uv` 미설치 → `brew install uv` / `winget install astral-sh.uv` |
+| `404 Not Found: @sooperset/mcp-atlassian` | npm 미등록 패키지. `.mcp.json`/`settings.json` 의 `command` 를 `uvx`, `args` 를 `["mcp-atlassian"]` 으로 변경 |
 | Figma `Unauthorized` | `FIGMA_ACCESS_TOKEN` 재발급 |
 | Axure 기획서 못 찾음 | `AXURE_DEFAULT_DIR` 경로 확인 |
 | `npx` 명령어 오류 (Windows) | `npx` → `npx.cmd` 로 변경 |

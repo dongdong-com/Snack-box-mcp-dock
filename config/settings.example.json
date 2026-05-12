@@ -3,17 +3,18 @@
     "Claude Code (.vscode/settings.json) 에서는 'claude.mcpServers' 키를 사용하세요.",
     "Gemini CLI (~/.gemini/settings.json) 에서는 'mcpServers' 키를 사용하세요.",
     "Windows 환경에서 npx 명령어가 인식되지 않으면 'npx' → 'npx.cmd' 로 변경하세요.",
+    "jira: sooperset/mcp-atlassian 은 Python 패키지이므로 uvx 로 실행합니다 (npm 미등록).",
+    "uv 설치: brew install uv | curl -LsSf https://astral.sh/uv/install.sh | sh | winget install astral-sh.uv",
     "각 ${env:VAR} 는 .env 파일에 설정된 환경변수를 참조합니다."
   ],
   "mcpServers": {
     "jira": {
-      "command": "npx",
-      "args": ["-y", "@sooperset/mcp-atlassian"],
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
       "env": {
         "JIRA_URL": "${env:JIRA_URL}",
         "JIRA_USERNAME": "${env:JIRA_USERNAME}",
         "JIRA_API_TOKEN": "${env:JIRA_API_TOKEN}",
-        "NODE_TLS_REJECT_UNAUTHORIZED": "0",
         "NODE_EXTRA_CA_CERTS": "${env:NODE_EXTRA_CA_CERTS}"
       }
     },
